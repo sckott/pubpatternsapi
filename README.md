@@ -23,10 +23,7 @@ available.  And if they aren't available chip in and make it work.
 ## Under the hood
 
 * API: Ruby/Sinatra
-* Storage: MySQL
-* Search: ...
-* Caching: Redis
-  * each key cached for 3 hours
+* Caching: None right, now, but will do Redis if used
 * Server: Caddy
   * https
 * Authentication: none
@@ -36,58 +33,64 @@ available.  And if they aren't available chip in and make it work.
 * static files in `ropenscilabs/pubpatterns/src` define patterns
 * we use these patterns to generate urls depending on the publisher, which can be determined from the DOI or given by the user
 * patterns are simply read from disk from the `src/` dir - simple, no database
-*
 
 ## API
 
-* root path <http://xxxx> - redirects to `/heartbeat`
-* `/heartbeat`
+* root path `/` - redirects to `/heartbeat/`
+* `/heartbeat` - list routes
+* `/members` - list all members with known patterns
+* `/members/:member` - list a single member
+* `/prefixes/:prefix` - some publishers are inside of bigger publishers & don't have own Crossref member number, but do have their own prefix
+* `/doi` - get full text links and other metadata
+* `/fetch` - redirect to the full text url
 
 ```r
 {
     "routes": [
         "/heartbeat",
-        "/patterns/member/:member",
-        "/patterns/prefix/:member",
+        "/members",
+        "/members/:member",
+        "/prefixes/:prefix",
         "/doi/*",
         "/fetch/*"
     ]
 }
 ```
 
-* `/xxx` - list datasets and minimal metadata
-* `/xxx/:xxx` - dataset metadata
-
 ## Examples
 
-### patterns 
+### all members
 
-#### crossref member numbers
+```bash
+curl -v 'http://127.0.0.1:8877/members' | jq .
+```
+
+### inividual crossref members
 
 ```bash
 # eLife
-curl -v 'http://127.0.0.1:8877/patterns/member/4374' | jq .
+curl -v 'http://127.0.0.1:8877/members/4374' | jq .
 
 # Pensoft
-curl -v 'http://127.0.0.1:8877/patterns/member/2258' | jq .
+curl -v 'http://127.0.0.1:8877/members/2258' | jq .
 
 # PLOS
-curl -v 'http://127.0.0.1:8877/patterns/member/340' | jq .
+curl -v 'http://127.0.0.1:8877/members/340' | jq .
 
 # DeGruyter
-curl -v 'http://127.0.0.1:8877/patterns/member/374' | jq .
+curl -v 'http://127.0.0.1:8877/members/374' | jq .
 
 # Hindawi
-curl -v 'http://127.0.0.1:8877/patterns/member/98' | jq .
+curl -v 'http://127.0.0.1:8877/members/98' | jq .
 ```
 
-#### doi prefixes 
+### doi prefixes
 
 Some publishers are inside of bigger publishers, so don't have their own Crossref member number, but do have their own DOI prefix, so we can use that to construct URLs for all their journals
 
 ```bash
 # cogent
-curl -v 'http://127.0.0.1:8877/patterns/prefix/10.1080' | jq .
+curl -v 'http://127.0.0.1:8877/prefixes/10.1080' | jq .
 ```
 
 ### full text links
