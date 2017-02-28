@@ -1,6 +1,8 @@
 Pubpatterns API
 ===============
 
+see also: <https://github.com/ropenscilabs/pubpatterns>
+
 Figuring out URLs for full text version of articles is a huge PITA.
 
 There's <https://doi.org> for resolving DOIs to their full URLs on the web, and
@@ -30,7 +32,7 @@ available.  And if they aren't available chip in and make it work.
 
 ## setup
 
-* static files in `ropenscilabs/pubpatterns/src` define patterns
+* static files in <https://github.com/ropenscilabs/pubpatterns/tree/master/src> define patterns
 * we use these patterns to generate urls depending on the publisher, which can be determined from the DOI or given by the user
 * patterns are simply read from disk from the `src/` dir - simple, no database
 
