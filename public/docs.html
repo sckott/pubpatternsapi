@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="full text DOIs">
+    <meta name="author" content="Scott Chamberlain">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>ftdoi.org</title>
+
+    <link href="../css/bootstrap_sandstone.min.css" rel="stylesheet">
+
+  <!--   <style type="text/css">
+      @media (min-width: 1200px) {
+          .container{
+              max-width: 1200px;
+          }
+      }
+    </style> -->
+  </head>
+
+  <body>
+
+    <div class="container">
+      <h1>ftdoi API Docs&nbsp;&nbsp;<small>Welcome to the API docs!</small></h1>
+
+      <h2>Routes</h2>
+
+      <div class="container-fluid" >
+        <ul>
+          <h2><li><code>/</code> Landing page, info and such</li></h2>
+          <h2><li><code>/docs</code> API documentation</li></h2>
+          <h2><li><code>/api</code> Redirects to <code>/api/heartbeat</code></li></h2>
+          <h2><li><code>/api/heartbeat</code> Lists routes on API</li></h2>
+          <h2><li><code>/:doi</code> Redirect to full text version (NOT WORKING YET)</li></h2>
+          <h2><li><code>/api/members</code> List/query all members</li></h2>
+          <h2><li><code>/api/members/:member</code> List parsing info for one member</li></h2>
+          <h2><li><code>/api/prefixes</code> List/query by prefix</li></h2>
+          <h2><li><code>/api/prefixes/:prefix</code> List parsing info for one prefix</li></h2>
+          <h2><li><code>/api/doi/*</code> Get links/other metadata by DOI</li></h2>
+          <h2><li><code>/api/fetch/</code> Download full text</li></h2>
+        </ul>
+      </div>
+    </div>
+
+  </body>
+</html>

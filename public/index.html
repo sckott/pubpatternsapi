@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="full text DOIs">
+    <meta name="author" content="Scott Chamberlain">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>ftdoi.org</title>
+
+    <link href="../css/bootstrap_sandstone.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="jumbotron">
+        <h1>ftdoi.org</h1>
+        <p class="lead">Figuring out URLs for full text version of articles is a huge PITA. <br><br>
+
+        There's <a href="https://doi.org">https://doi.org</a> for resolving DOIs to their full URLs on the web, and
+        there's <a href="https://oadoi.org/">https://oadoi.org/</a> for the same but to OA versions.<br><br>
+
+        However, there's no good tool for figuring out links to versions for text mining:
+        typically either pdf or xml.<br><br>
+
+        There is Crossref's TDM (text and data mining) bit, where publishers voluntarily
+        deposit full text links into Crossref's metadata. However, very few publishers
+        do this; some that do don't deposit correct metadata; some deposit but don't update
+        when they change their URL structure (and publishers change URL stucture <strong>A LOT</strong>).<br><br>
+
+        This API builds on work at <a href="https://github.com/ropenscilabs/pubpatterns">https://github.com/ropenscilabs/pubpatterns</a> - which
+        is simply rules for building URLs.<br><br>
+
+        This API allows you to give a DOI and get back full text URLs for PDF/XML/etc. if
+        available.  And if they aren't available chip in and make it work.</p>
+        <center><a class="btn btn-lg btn-primary" href="docs.html" role="button">API docs &raquo;</a></center>
+      </div>
+    </div>
+
+  </body>
+</html>

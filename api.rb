@@ -28,9 +28,12 @@ class PubPatternsApp < Sinatra::Application
     halt 500, {'Content-Type' => 'application/json'}, MultiJson.dump({ 'error' => 'server error' })
   end
 
-  before do
-    # pass if %w[fetch].include? request.path_info.split('/')[3]
+  # make html files of content type text/html
+  configure do
+    mime_type :apidocs, 'text/html'
+  end
 
+  before '/api/*' do
     headers "Content-Type" => "application/json; charset=utf8"
     headers "Access-Control-Allow-Methods" => "HEAD, GET"
     headers "Access-Control-Allow-Origin" => "*"
@@ -43,56 +46,112 @@ class PubPatternsApp < Sinatra::Application
     #     halt 200, $redis.get(@cache_key)
     #   end
     # end
+
+    # puts '[env]'
+    # p env
+    # puts '[Params]'
+    # p params
+
   end
 
   # after do
-  #   puts request.path_info.split('/')[3]
-  #   pass if %w[fetch].include? request.path_info.split('/')[3]
-
   #   # cache response in redis
   #   if $config['caching'] && !response.headers['Cache-Hit'] && response.status == 200
   #     $redis.set(@cache_key, response.body[0], ex: $config['caching']['expires'])
   #   end
   # end
 
-  # prohibit certain methods
+  # prohibit HTTP methods
   route :put, :post, :delete, :copy, :options, :trace, '/*' do
     halt 405
   end
 
+
+  # home
   get '/' do
-    redirect '/heartbeat/', 301
+    content_type :apidocs
+    send_file File.join(settings.public_folder, 'index.html')
   end
 
-  get "/heartbeat/?" do
+
+  # doi
+  ## FIXME - not figured out how to regex on doi's only for browser use case
+  # get '/*' do
+  # # get %r{/10\..+/} do
+  # # get /(10\..+)/ do
+  #   headers "Access-Control-Allow-Methods" => "HEAD, GET"
+  #   headers "Access-Control-Allow-Origin" => "*"
+  #   cache_control :public, :must_revalidate, :max_age => 300
+
+  #   out = fetch_download
+  #   redirect to(out), 301
+
+  #   # doi = params[:splat].first
+
+  #   # redirect '/api/fetch/#{doi}'
+  #   # return MultiJson.dump({
+  #   #   "doi" => doi
+  #   # })
+  # end
+
+  # api -> heartbeat
+  get '/api/?' do
+    redirect '/api/heartbeat/', 301
+  end
+
+  get "/api/heartbeat/?" do
     return MultiJson.dump({
       "routes" => [
-        "/heartbeat",
-        "/patterns/member/:member",
-        "/patterns/prefix/:member",
-        "/doi/*",
-        "/fetch/*"
+        "/ (api docs)",
+        "/api (-> /api/heartbeat)",
+        "/api/heartbeat",
+        "/:doi (not working yet)",
+        "/api/members",
+        "/api/members/:member",
+        "/api/prefixes",
+        "/api/prefixes/:prefix",
+        "/api/doi/*",
+        "/api/fetch/*"
       ]
     })
   end
 
-  get '/patterns/member/:member/?' do
+
+
+  # members
+  get '/api/members/?' do
+    res = fetch_members
+    return MultiJson.dump(res)
+  end
+
+  get '/api/members/:member/?' do
     res = fetch_pattern_member
     return MultiJson.dump(res)
   end
 
-  get '/patterns/prefix/:prefix/?' do
+
+  # prefixes
+  get '/api/prefixes/?' do
+    res = fetch_prefixes
+    return MultiJson.dump(res)
+  end
+
+  get '/api/prefixes/:prefix/?' do
     res = fetch_pattern_prefix
     return MultiJson.dump(res)
   end
 
-  get '/doi/*/?' do
-    MultiJson.dump(fetch_url)
+
+  # doi
+  get '/api/doi/*/?' do
+    return MultiJson.dump(fetch_url)
   end
 
-  get '/fetch/*/?' do
-    x = fetch_url
-    redirect to(x["url"]), 301
+
+  # fetch/download
+  get '/api/fetch/*/?' do
+    out = fetch_download
+    redirect to(out), 301
   end
 
 end

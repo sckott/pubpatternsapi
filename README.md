@@ -41,7 +41,7 @@ available.  And if they aren't available chip in and make it work.
 * root path `/` - redirects to `/heartbeat/`
 * `/heartbeat` - list routes
 * `/members` - list all members with known patterns
-* `/members/:member` - list a single member
+* `/api/members/:member` - list a single member
 * `/prefixes/:prefix` - some publishers are inside of bigger publishers & don't have own Crossref member number, but do have their own prefix
 * `/doi` - get full text links and other metadata
 * `/fetch` - redirect to the full text url
@@ -49,12 +49,16 @@ available.  And if they aren't available chip in and make it work.
 ```r
 {
     "routes": [
-        "/heartbeat",
-        "/members",
-        "/members/:member",
-        "/prefixes/:prefix",
-        "/doi/*",
-        "/fetch/*"
+    		"/ (api docs)",
+        "/api (-> /api/heartbeat)",
+        "/api/heartbeat",
+        "/:doi (not working yet)",
+        "/api/members",
+        "/api/members/:member",
+        "/api/prefixes",
+        "/api/prefixes/:prefix",
+        "/api/doi/*",
+        "/api/fetch/*"
     ]
 }
 ```
@@ -64,26 +68,26 @@ available.  And if they aren't available chip in and make it work.
 ### all members
 
 ```bash
-curl -v 'http://127.0.0.1:8876/members' | jq .
+curl -v 'http://127.0.0.1:8876/api/members' | jq .
 ```
 
 ### inividual crossref members
 
 ```bash
 # eLife
-curl -v 'http://127.0.0.1:8876/members/4374' | jq .
+curl -v 'http://127.0.0.1:8876/api/members/4374' | jq .
 
 # Pensoft
-curl -v 'http://127.0.0.1:8876/members/2258' | jq .
+curl -v 'http://127.0.0.1:8876/api/members/2258' | jq .
 
 # PLOS
-curl -v 'http://127.0.0.1:8876/members/340' | jq .
+curl -v 'http://127.0.0.1:8876/api/members/340' | jq .
 
 # DeGruyter
-curl -v 'http://127.0.0.1:8876/members/374' | jq .
+curl -v 'http://127.0.0.1:8876/api/members/374' | jq .
 
 # Hindawi
-curl -v 'http://127.0.0.1:8876/members/98' | jq .
+curl -v 'http://127.0.0.1:8876/api/members/98' | jq .
 ```
 
 ### doi prefixes
@@ -92,7 +96,7 @@ Some publishers are inside of bigger publishers, so don't have their own Crossre
 
 ```bash
 # cogent
-curl -v 'http://127.0.0.1:8876/prefixes/10.1080' | jq .
+curl -v 'http://127.0.0.1:8876/api/prefixes/10.1080' | jq .
 ```
 
 ### full text links
@@ -101,38 +105,47 @@ API to get link information - gives doi, xml, and pdf links
 
 ```bash
 # eLife
-curl -v 'http://127.0.0.1:8876/doi/10.7554/eLife.07404' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.7554/eLife.07404' | jq .
 
 # PeerJ
-curl -v 'http://127.0.0.1:8876/doi/10.7717/peerj.991' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.7717/peerj.991' | jq .
 
 # Pensoft
-curl -v 'http://127.0.0.1:8876/doi/10.3897/zookeys.594.8768' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.3897/zookeys.594.8768' | jq .
 
 # PLOS
-curl -v 'http://127.0.0.1:8876/doi/10.1371/journal.pgen.1006546' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.1371/journal.pgen.1006546' | jq .
 
 # MDPI
-curl -v 'http://127.0.0.1:8876/doi/10.3390/a7010032' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.3390/a7010032' | jq .
 
 # FrontersIn
-curl -v 'http://127.0.0.1:8876/doi/10.3389/fmed.2015.00081' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.3389/fmed.2015.00081' | jq .
 
 # Thieme
-curl -v 'http://127.0.0.1:8876/doi/10.1055/s-0042-103414' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.1055/s-0042-103414' | jq .
 
 # DeGruyter
-curl -v 'http://127.0.0.1:8876/doi/10.1515/bj-2015-0021' | jq .
-curl -v 'http://127.0.0.1:8876/doi/10.1515/jim-2016-0069' | jq .
-curl -v 'http://127.0.0.1:8876/doi/10.1515/contagri-2016-0010' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.1515/bj-2015-0021' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.1515/jim-2016-0069' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.1515/contagri-2016-0010' | jq .
 
 # AAAS
 ## Science Advances
-curl -v 'http://127.0.0.1:8876/doi/10.1126/sciadv.1602209' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.1126/sciadv.1602209' | jq .
 
 ## Science
-curl -v 'http://127.0.0.1:8876/doi/10.1126/science.aag2360' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.1126/science.aag2360' | jq .
 
 ## Hindawi
-curl -v 'http://127.0.0.1:8876/doi/10.1155/2013/520285' | jq .
+curl -v 'http://127.0.0.1:8876/api/doi/10.1155/2013/520285' | jq .
+```
+
+### fetch
+
+```bash
+# PLOS
+curl 'http://127.0.0.1:8876/api/fetch/10.1371/journal.pgen.1006546?type=xml'
+# or
+curl -H 'application/xml' 'http://127.0.0.1:8876/api/fetch/10.1371/journal.pgen.1006546'
 ```
