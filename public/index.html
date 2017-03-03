@@ -17,7 +17,13 @@
     <div class="container">
       <div class="jumbotron">
         <h1>ftdoi.org</h1>
-        <p class="lead">Figuring out URLs for full text version of articles is a huge PITA. <br><br>
+        <p class="lead">
+        <strong>ftdoi.org</strong> allows you to give a DOI and get back full text URLs for PDF/XML/etc. if
+        available.<br><br>
+
+        The goal is to allow browser flow (aka: <code>ftdoi.org/doi</code>) like one often does with <code>https://doi.org</code> and <code>https://oadoi.org</code>, AND for programmatic flow in any programming language of choice (aka: <code>ftdoi.org/api/...</code>). Right now, only the programmatic flow is supported, but you can of course use the api in browser if you like.<br><br>
+
+        Figuring out URLs for full text version of articles is a huge PITA. <br><br>
 
         There's <a href="https://doi.org">https://doi.org</a> for resolving DOIs to their full URLs on the web, and
         there's <a href="https://oadoi.org/">https://oadoi.org/</a> for the same but to OA versions.<br><br>
@@ -28,13 +34,13 @@
         There is Crossref's TDM (text and data mining) bit, where publishers voluntarily
         deposit full text links into Crossref's metadata. However, very few publishers
         do this; some that do don't deposit correct metadata; some deposit but don't update
-        when they change their URL structure (and publishers change URL stucture <strong>A LOT</strong>).<br><br>
+        when they change their URL structure (and publishers change URL stucture <strong>A LOT</strong>).
+        Checkout <a href="https://gist.github.com/sckott/7a82fda529f5c2fd63d661c36f47e5d7">my brief analysis</a>.<br><br>
 
-        This API builds on work at <a href="https://github.com/ropenscilabs/pubpatterns">https://github.com/ropenscilabs/pubpatterns</a> - which
-        is simply rules for building URLs.<br><br>
+        This API builds on work at <a href="https://github.com/ropenscilabs/pubpatterns">https://github.com/ropenscilabs/pubpatterns</a> - which is simply rules for building URLs. The idea here is that we can crowd source the best knowledgee on correct URL patterns to full text versions of articles on a per publisher basis, either by crossref member number, or by DOI prefix. If there's publishers that aren't included, <a href="https://github.com/ropenscilabs/pubpatterns/pulls">send a PR</a>. <br><br>
 
-        This API allows you to give a DOI and get back full text URLs for PDF/XML/etc. if
-        available.  And if they aren't available chip in and make it work.</p>
+        source code for the API is at <a href="https://github.com/ropenscilabs/pubpatternsapi">https://github.com/ropenscilabs/pubpatternsapi</a><br><br>
+        </p>
         <center><a class="btn btn-lg btn-primary" href="docs.html" role="button">API docs &raquo;</a></center>
       </div>
     </div>
