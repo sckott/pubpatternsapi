@@ -12,7 +12,11 @@ end
 
 # members
 def fetch_pattern_member
-  path = $member_map[params["member"]]["path"]
+  mem = $member_map[params["member"]]
+  if mem.nil?
+    halt 400, {'Content-Type' => 'application/json'}, MultiJson.dump({ 'error' => 'that member not supported yet' })
+  end
+  path = mem["path"]
   json = MultiJson.load(File.read(path))
   return json
 end
@@ -25,13 +29,13 @@ end
 
 # prefixes
 def fetch_pattern_prefix
-  begin
-    path = $prefix_map[params["prefix"]]["path"]
-    json = MultiJson.load(File.read(path))
-    return json
-  rescue Exception => e
-    halt 404, {'Content-Type' => 'application/json'}, MultiJson.dump({ 'error' => 'that prefix not supported' })
+  pre = $prefix_map[params["prefix"]]
+  if pre.nil?
+    halt 400, {'Content-Type' => 'application/json'}, MultiJson.dump({ 'error' => 'that prefix not supported' })
   end
+  path = pre["path"]
+  json = MultiJson.load(File.read(path))
+  return json
 end
 
 def fetch_prefixes
@@ -104,7 +108,7 @@ def fetch_url
     path = memz["path"]
     memname = memz["name"]
   rescue Exception => e
-    halt 404, err_member(e)
+    halt 400, err_member(e)
   end
 
   json = MultiJson.load(File.read(path))
