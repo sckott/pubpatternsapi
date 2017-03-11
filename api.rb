@@ -67,6 +67,16 @@ class PubPatternsApp < Sinatra::Application
   end
 
 
+  # handler - redirects any /foo -> /foo/
+  #  - if has any query params, passes to handler as before
+  get %r{(/.*[^\/])$} do
+    if request.query_string == "" or request.query_string.nil?
+      redirect request.script_name + "#{params[:captures].first}/"
+    else
+      pass
+    end
+  end
+
   # home
   get '/?' do
     content_type :apidocs
@@ -96,6 +106,11 @@ class PubPatternsApp < Sinatra::Application
 
   # api -> heartbeat
   get '/api/?' do
+    redirect '/api/heartbeat/', 301
+  end
+
+  # heartbeat -> /api/heartbeat
+  get '/heartbeat/?' do
     redirect '/api/heartbeat/', 301
   end
 
