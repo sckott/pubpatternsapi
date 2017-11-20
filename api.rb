@@ -69,7 +69,7 @@ class PubPatternsApp < Sinatra::Application
 
   # handler - redirects any /foo -> /foo/
   #  - if has any query params, passes to handler as before
-  get %r{(/.*[^\/])$} do
+  get %r{(/.*[^\/])} do
     if request.query_string == "" or request.query_string.nil?
       redirect request.script_name + "#{params[:captures].first}/"
     else

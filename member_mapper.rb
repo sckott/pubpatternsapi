@@ -58,5 +58,33 @@ $member_map = {
 	"266" => {
 		"name" => "iop",
 		"path" => "../pubpatterns/src/iop.json"
+	},
+	"78" => {
+		"name" => "elsevier",
+		"path" => "../pubpatterns/src/elsevier.json"
+	},
+	"16" => {
+		"name" => "american-physical-society",
+		"path" => "../pubpatterns/src/american_physical_society.json"
+	},
+	"292" => {
+		"name" => "royal-society-chemistry",
+		"path" => "../pubpatterns/src/royal_society_chemistry.json"
+	},
+	"127" => {
+		"name" => "karger",
+		"path" => "../pubpatterns/src/karger.json"
+	},
+	"2457" => {
+		"name" => "trans-tech-publications",
+		"path" => "../pubpatterns/src/transtech.json"
+	},
+	"140" => {
+		"name" => "emerald",
+		"path" => "../pubpatterns/src/emerald.json"
+	},
+	"137" => {
+		"name" => "pleiades",
+		"path" => "../pubpatterns/src/pleiades.json"
 	}
 }

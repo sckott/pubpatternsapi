@@ -141,6 +141,26 @@ curl -v 'https://ftdoi.org/api/doi/10.1126/science.aag2360' | jq .
 
 ## Hindawi
 curl -v 'https://ftdoi.org/api/doi/10.1155/2013/520285' | jq .
+
+## Elsevier
+curl -v 'https://ftdoi.org/api/doi/10.1016/j.bandc.2015.12.003' | jq .
+curl -v 'https://ftdoi.org/api/doi/10.1016/j.medipa.2014.03.002' | jq .
+curl -v 'https://ftdoi.org/api/doi/10.1016/j.ad.2015.04.031' | jq .
+curl -v 'https://ftdoi.org/api/doi/10.1016/0304-4009(76)90035-8' | jq .
+curl -v 'https://ftdoi.org/api/doi/10.1240/sav_gbm_2007_m_001760' | jq .
+curl -v 'https://ftdoi.org/api/doi/10.2139/ssrn.1627363' | jq .
+
+### Karger
+#### link in Crossref API
+curl -v 'https://ftdoi.org/api/doi/10.1159/000362763/' | jq .
+#### link NOT in Crossref API
+curl -v 'https://ftdoi.org/api/doi/10.1159/000443559/' | jq .
+
+### Pleiades
+#### older URLs to pdfs
+curl -v 'https://ftdoi.org/api/doi/10.1134/1.1571876/' | jq .
+#### newer URLs to pdfs
+curl -v 'https://ftdoi.org/api/doi/10.1134/S1070427217070047/' | jq .
 ```
 
 ### fetch

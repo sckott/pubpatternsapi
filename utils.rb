@@ -115,11 +115,13 @@ def fetch_url
 
   case mem_num
   when "4374"
+    # eLife
     links = make_links(doi, json['journals'][0]['urls'],
       json['journals'][0]['components']['doi']['regex'])
     return {"doi" => doi, "member" => {"name" => memname, "url" => "4374".murl},
-      "issn" => "2050-084X".iurl, "link" => links}
+      "issn" => "2050-084X".iurl, "links" => links}
   when "2258"
+    # Pensoft Publishers
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN'][0]
     links = make_links(doi,
@@ -127,15 +129,17 @@ def fetch_url
       json['journals'][0]['components']['doi']['regex']
     )
     return {"doi" => doi, "member" => {"name" => memname, "url" => "2258".murl},
-      "issn" => Array(issn).map(&:iurl), "link" => links}
+      "issn" => Array(issn).map(&:iurl), "links" => links}
   when "340"
+    # Public Library of Science (PLoS)
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN'][0]
     bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn) }.any? }[0]
     links = make_links(doi, bit['urls'], bit['components']['doi']['regex'])
     return {"doi" => doi, "member" => {"name" => memname, "url" => "340".murl},
-      "issn" => Array(issn).map(&:iurl), "link" => links}
+      "issn" => Array(issn).map(&:iurl), "links" => links}
   when "1968"
+    # MDPI AG
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN'][0]
     links = []
@@ -151,30 +155,35 @@ def fetch_url
     end
 
     return {"doi" => doi, "member" => {"name" => memname, "url" => "1968".murl},
-      "issn" => Array(issn).map(&:iurl), "link" => links}
+      "issn" => Array(issn).map(&:iurl), "links" => links}
   when "1965"
+    # Frontiers
     links = make_links(doi, json['urls'], json['components']['doi']['regex'])
     # url = json['urls'][ctype] % doi.match(json['components']['doi']['regex'])
-    return {"doi" => doi, "member" => {"name" => memname, "url" => "1965".murl}, "issn" => nil, "link" => links}
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "1965".murl}, "issn" => nil, "links" => links}
   when "301"
+    # Informa UK Limited
     links = make_links(doi, json['urls'], json['components']['doi']['regex'])
     # url = json['urls'][ctype] % doi.match(json['components']['doi']['regex'])
-    return {"doi" => doi, "member" => {"name" => memname, "url" => "301".murl}, "issn" => nil, "link" => links}
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "301".murl}, "issn" => nil, "links" => links}
   when "194"
+    # Georg Thieme Verlag KG
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN'][0]
     bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn) }.any? }[0]
     url = bit['urls']['pdf'] % doi.match(bit['components']['doi']['regex']).to_s
     return {"doi" => doi, "member" => {"name" => memname, "url" => "194".murl},
-      "issn" => Array(issn).map(&:iurl), "link" => url}
+      "issn" => Array(issn).map(&:iurl), "links" => url}
   when "4443"
+    # PeerJ
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN'][0]
     bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn) }.any? }[0]
     url = bit['urls'][ctype] % doi.match(bit['components']['doi']['regex']).to_s
     return {"doi" => doi, "member" => {"name" => memname, "url" => "4443".murl},
-      "issn" => Array(issn).map(&:iurl), "link" => url}
+      "issn" => Array(issn).map(&:iurl), "links" => url}
   when "374"
+    # Walter de Gruyter GmbH
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN'][0]
     doi2 = doi.match(json['components']['doi']['regex']).to_s
@@ -187,8 +196,9 @@ def fetch_url
       doi2
     ]
     return {"doi" => doi, "member" => {"name" => memname, "url" => "374".murl},
-      "issn" => Array(issn).map(&:iurl), "link" => url}
+      "issn" => Array(issn).map(&:iurl), "links" => url}
   when "221"
+    # AAAS
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN']
     bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn.join('|')) }.any? }[0]
@@ -205,9 +215,11 @@ def fetch_url
       last_part
     ]
     return {"doi" => doi, "member" => {"name" => memname, "url" => "221".murl},
-      "issn" => Array(issn).map(&:iurl), "link" => url}
+      "issn" => Array(issn).map(&:iurl), "links" => url}
   when "98"
+    # Hindawi
     res = Serrano.works(ids: doi)
+    ctype = params["type"]
 
     begin
       url = res[0]['message']['link'].select { |x| x['content-type'].match(ctype) }[0]['URL']
@@ -223,14 +235,144 @@ def fetch_url
     end
 
     return {"doi" => doi, "member" => {"name" => memname, "url" => "98".murl},
-      "issn" => Array(issn).map(&:iurl), "link" => url}
+      "issn" => Array(issn).map(&:iurl), "links" => url}
   when "266"
+    # IOP Publishing
     url = json['urls']['pdf']
     doi_bit = doi.match(json['components']['doi']['regex'])[0]
     url = url % doi_bit
-    return {"doi" => doi, "member" => {"name" => memname, "url" => "266".murl}, "issn" => nil, "link" => url}
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "266".murl}, "issn" => nil, "links" => url}
+  when "78"
+    # Elsevier
+    res = Serrano.works(ids: doi)
+    ctype = params["type"]
+
+    begin
+      if ctype.nil?
+        links = res[0]['message']['link'].map { |x| x['URL'] }
+      else
+        links = res[0]['message']['link'].select { |x| x['content-type'].match(ctype) }[0]['URL']
+      end
+      issn = res[0]['message']['ISSN']
+    rescue Exception => e
+      links = json['urls']
+      if res[0]['message']["alternative-id"].nil?
+        links = nil
+      else
+        links = links.each { |x,y| links[x] = y % res[0]['message']["alternative-id"][0] }
+        if !ctype.nil?
+          links = links[ctype]
+        end
+      end
+    end
+
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "78".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => links}
+  when "2899"
+    # Association of Fire Ecology
+    conn = Faraday.new(:url => "https://doi.org/" + doi) do |f|
+      f.use FaradayMiddleware::FollowRedirects
+      f.adapter  Faraday.default_adapter
+    end
+    out = conn.get
+    out.body
+    "citation_pdf_url"
+
+    # fireecologyjournal.org/docs/Journal/pdf/Volume12/Issue01/124.pdf
+    "http://" + pdf_url
+  when "16"
+    # American Phyiscal Society
+    res = Serrano.works(ids: doi)
+    # no need to do content type b/c only avail. is PDF
+
+    begin
+      url = res[0]['message']['link'].select { |x| x['intended-application'] == "similarity-checking" }[0]['URL']
+      issn = res[0]['message']['ISSN']
+    rescue Exception => e
+      url = json['urls']['pdf']
+      doi_bit = doi.match(json['components']['doi']['regex']).to_s
+      url = url % [res[0]['message'], doi_bit]
+    end
+
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "16".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => url}
+  when "292"
+    # Royal Society of Chemistry
+    res = Serrano.works(ids: doi)
+    # no need to do content type b/c only avail. is PDF
+
+    begin
+      url = res[0]['message']['link'].select { |x| x['intended-application'] == "similarity-checking" }[0]['URL']
+      issn = res[0]['message']['ISSN']
+    rescue Exception => e
+      url = json['urls']['pdf']
+      doi_bit = doi.match(json['components']['doi']['regex']).to_s
+      url = url % [res[0]['message'], doi_bit]
+    end
+
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "292".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => url}
+  when "127"
+    # Karger
+    res = Serrano.works(ids: doi)
+    # no need to do content type b/c only avail. is PDF
+
+    begin
+      url = res[0]['message']['link'].select { |x| x['intended-application'] == "similarity-checking" }[0]['URL']
+      issn = res[0]['message']['ISSN']
+    rescue Exception => e
+      url = json['urls']['pdf']
+      doi_bit = doi.match(json['components']['doi']['regex']).to_s
+      url = url % doi_bit
+      issn = res[0]['message']['ISSN']
+    end
+
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "127".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => url}
+  when "2457"
+    # Trans Tech Publications
+    res = Serrano.works(ids: doi)
+    # no need to do content type b/c only avail. is PDF
+
+    begin
+      url = res[0]['message']['link'].select { |x| x['intended-application'] == "similarity-checking" }[0]['URL']
+      issn = res[0]['message']['ISSN']
+    rescue Exception => e
+      url = json['urls']['pdf']
+      doi_bit = doi.match(json['components']['doi']['regex']).to_s
+      url = url % doi_bit
+      issn = res[0]['message']['ISSN']
+    end
+
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "2457".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => url}
+  when "140"
+    # Emerald
+    res = Serrano.works(ids: doi)
+    ctype = params["type"] || "pdf"
+
+    issn = res[0]['message']['ISSN']
+    doi_bit = doi.match(json['components']['doi']['regex']).to_s
+    if ctype == "pdf"
+      url = json['urls']['pdf']
+    else
+      url = json['urls']['html']
+    end
+    url = url % doi_bit
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "140".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => url}
+  when "137"
+    # Pleiades
+    res = Serrano.works(ids: doi)
+    # pdfs only, no type needed
+    issn = res[0]['message']['ISSN']
+    url = json['urls']['pdf']
+    doi_bit = doi.match(json['components']['doi']['regex']).to_s
+    url = url % doi_bit
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "137".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => url}
   else
-    return {"doi" => doi, "member" => nil, "issn" => nil, "link" => nil}
+    return {"doi" => doi, "member" => nil, "issn" => nil, "links" => nil}
   end
 end
 
