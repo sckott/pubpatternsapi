@@ -86,5 +86,13 @@ $member_map = {
 	"137" => {
 		"name" => "pleiades",
 		"path" => "../pubpatterns/src/pleiades.json"
+	},
+	"8215" => {
+		"name" => "iif",
+		"path" => "../pubpatterns/src/iif.json"
+	},
+	"189" => {
+		"name" => "spie",
+		"path" => "../pubpatterns/src/spie.json"
 	}
 }

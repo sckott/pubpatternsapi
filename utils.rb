@@ -371,6 +371,35 @@ def fetch_url
     url = url % doi_bit
     return {"doi" => doi, "member" => {"name" => memname, "url" => "137".murl},
       "issn" => Array(issn).map(&:iurl), "links" => url}
+  when "8215"
+    # instituto_de_investigaciones_filologicas
+    res = Serrano.works(ids: doi)
+    # pdfs only, no type needed
+    issn = res[0]['message']['ISSN']
+    url = res[0]['message']['link'][0]['URL']
+    url = url.sub('view', 'download')
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "8215".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => url}
+  when "179"
+    # Sage
+    res = Serrano.works(ids: doi)
+    issn = res[0]['message']['ISSN']
+    url = res[0]['message']['link'][0]['URL']
+    url = url.sub('view', 'download')
+    return {"doi" => doi, "member" => {"name" => memname, "url" => "179".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => url}
+  when "189"
+    # SPIE
+    res = Serrano.works(ids: doi)
+    issn = res[0]['message']['ISSN']
+    
+    url = json['urls']['pdf']
+    doi_bit = doi.match(json['components']['doi']['regex']).to_s
+    url = url % doi_bit
+
+    return { "doi" => doi, "member" => {"name" => memname, "url" => "189".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => url, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
   else
     return {"doi" => doi, "member" => nil, "issn" => nil, "links" => nil}
   end
