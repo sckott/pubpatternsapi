@@ -6,7 +6,7 @@ require_relative "prefix_mapper"
 
 # get mapper
 def err_member(e)
-  return { error: { message: "no mapper for the DOI" } }.to_json
+  return { error: "no mapper for the DOI" }.to_json
 end
 
 
