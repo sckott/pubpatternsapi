@@ -92,6 +92,7 @@ end
 # by doi
 def fetch_url
   doi = params[:splat].first
+  puts params['doi']
   # FIXME - sanitize doi and error on invalid inputs
 
   begin

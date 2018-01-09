@@ -86,9 +86,11 @@ class PubPatternsApp < Sinatra::Application
 
   # doi
   ## FIXME - not figured out how to regex on doi's only for browser use case
-  # get '/*' do
-  # # get %r{/10\..+/} do
-  # # get /(10\..+)/ do
+  # get %r{(/.*[^\/])} do
+  # get %r{/10\..+/} do
+  # get /(10\..+)/ do
+  # get '/:doi/?' do
+  #   # puts params['doi']
   #   headers "Access-Control-Allow-Methods" => "HEAD, GET"
   #   headers "Access-Control-Allow-Origin" => "*"
   #   cache_control :public, :must_revalidate, :max_age => 300
