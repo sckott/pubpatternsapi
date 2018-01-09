@@ -36,34 +36,35 @@
 
       <div class="container-fluid">
         <h3>all members</h3>
-        <code>curl -v 'https://ftdoi.org/api/members' | jq .</code>
+        <code>curl -v 'https://ftdoi.org/api/members/' | jq .</code>
         <br>
 
         <h3>inividual crossref members</h3>
         <h4>eLife</h4>
-        <code>curl -v 'https://ftdoi.org/api/members/4374' | jq .</code>
+        <code>curl -v 'https://ftdoi.org/api/members/4374/' | jq .</code>
         <h4>Pensoft</h4>
-        <code>curl -v 'https://ftdoi.org/api/members/2258' | jq .</code>
+        <code>curl -v 'https://ftdoi.org/api/members/2258/' | jq .</code>
         <br>
 
         <h3>doi prefixes</h3>
         <p>Some publishers are inside of bigger publishers, so don't have their own Crossref member number, but do have their own DOI prefix, so we can use that to construct URLs for all their journals</p>
 
         <h4>cogent</h4>
-        <code>curl -v 'https://ftdoi.org/api/prefixes/10.1080' | jq .</code>
+        <code>curl -v 'https://ftdoi.org/api/prefixes/10.1080/' | jq .</code>
 
         <h3>full text links</h3>
         <p>API to get link information - gives doi, xml, and pdf links</p>
         <h4>eLife</h4>
-        <code>curl -v 'https://ftdoi.org/api/doi/10.7554/eLife.07404' | jq .</code>
+        <code>curl -v 'https://ftdoi.org/api/doi/10.7554/eLife.07404/' | jq .</code>
         <h4>PeerJ</h4>
-        <code>curl -v 'https://ftdoi.org/api/doi/10.7717/peerj.991' | jq .</code>
+        <code>curl -v 'https://ftdoi.org/api/doi/10.7717/peerj.991/' | jq .</code>
 
         <h3>fetch</h3>
         <h4>PLOS</h4>
         <code>curl 'https://ftdoi.org/api/fetch/10.1371/journal.pgen.1006546?type=xml'</code>
         <br>
-        <code>curl -H 'application/xml' 'https://ftdoi.org/api/fetch/10.1371/journal.pgen.1006546'</code>
+        <code>curl -H 'application/xml' 'https://ftdoi.org/api/fetch/10.1371/journal.pgen.1006546/'</code>
+        <br><br>
       </div>
     </div>
 

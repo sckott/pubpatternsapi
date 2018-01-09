@@ -179,9 +179,10 @@ def fetch_url
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN'][0]
     bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn) }.any? }[0]
-    url = bit['urls'][ctype] % doi.match(bit['components']['doi']['regex']).to_s
+    # urls = bit['urls'].map { |k,v| v % doi.match(bit['components']['doi']['regex']).to_s }
+    urls = make_links(doi, bit['urls'], bit['components']['doi']['regex'])
     return {"doi" => doi, "member" => {"name" => memname, "url" => "4443".murl},
-      "issn" => Array(issn).map(&:iurl), "links" => url}
+      "issn" => Array(issn).map(&:iurl), "links" => urls}
   when "374"
     # Walter de Gruyter GmbH
     res = Serrano.works(ids: doi)
@@ -438,7 +439,7 @@ def fetch_download
   end
 
   x = fetch_url
-  urls = x["link"]
+  urls = x["links"]
   # puts urls
 
   # if browser, go with whatever's available, prefer pdf first
