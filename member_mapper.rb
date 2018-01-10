@@ -98,5 +98,9 @@ $member_map = {
 	"341" => {
 		"name" => "pnas",
 		"path" => "../pubpatterns/src/pnas.json"
+	},
+	"297" => {
+		"name" => "springer",
+		"path" => "../pubpatterns/src/springer.json"
 	}
 }

@@ -413,7 +413,18 @@ def fetch_url
 
     url = url % [ res[0]['message']['volume'], res[0]['message']['issue'], 
       res[0]['message']['page'].split('-')[0].sub('E', '') ]
-    return { "doi" => doi, "member" => {"name" => memname, "url" => "189".murl},
+    return { "doi" => doi, "member" => {"name" => memname, "url" => "341".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => url }, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "297"
+    # Springer
+    res = Serrano.works(ids: doi)
+    issn = res[0]['message']['ISSN']
+    url = json['urls']['pdf']
+    doi_bit = doi.match(json['components']['doi']['regex']).to_s
+    url = url % doi_bit
+
+    return { "doi" => doi, "member" => {"name" => memname, "url" => "297".murl},
       "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => url }, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   else
