@@ -189,18 +189,17 @@ def fetch_url
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN'][0]
     urls = res[0]['message']['link'].map { |x| x['URL'] }
-    out = []
+
+    types = []
     urls.each do |x|
       if x.match(/xml/).nil?
-        typ = "pdf"
+        types << "pdf"
       else
-        typ = "xml"
+        types << "xml"
       end
-      out << {
-        'url' => x,
-        'content-type' => typ
-      }
     end
+    out = Hash[types.zip(urls)] 
+
     return {"doi" => doi, "member" => {"name" => memname, "url" => "374".murl},
       "issn" => Array(issn).map(&:iurl), "links" => out}
   when "221"
