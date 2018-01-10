@@ -405,6 +405,17 @@ def fetch_url
     return { "doi" => doi, "member" => {"name" => memname, "url" => "189".murl},
       "issn" => Array(issn).map(&:iurl), "links" => url, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "341"
+    # PNAS
+    res = Serrano.works(ids: doi)
+    issn = res[0]['message']['ISSN']
+    url = json['urls']['pdf']
+
+    url = url % [ res[0]['message']['volume'], res[0]['message']['issue'], 
+      res[0]['message']['page'].split('-')[0].sub('E', '') ]
+    return { "doi" => doi, "member" => {"name" => memname, "url" => "189".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => url }, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
   else
     return {"doi" => doi, "member" => nil, "issn" => nil, "links" => nil}
   end
