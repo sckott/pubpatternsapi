@@ -202,7 +202,7 @@ def fetch_url
       }
     end
     return {"doi" => doi, "member" => {"name" => memname, "url" => "374".murl},
-      "issn" => Array(issn).map(&:iurl), "links" => urls}
+      "issn" => Array(issn).map(&:iurl), "links" => out}
   when "221"
     # AAAS
     res = Serrano.works(ids: doi)
