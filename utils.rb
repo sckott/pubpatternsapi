@@ -188,17 +188,21 @@ def fetch_url
     # Walter de Gruyter GmbH
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN'][0]
-    doi2 = doi.match(json['components']['doi']['regex']).to_s
-    url = json['urls']['pdf'] % [
-      doi2.split('-')[0],
-      doi2.split('-')[1],
-      res[0]['message']['volume'],
-      'issue-' + res[0]['message']['issue'],
-      doi2,
-      doi2
-    ]
+    urls = res[0]['message']['link'].map { |x| x['URL'] }
+    out = []
+    urls.each do |x|
+      if x.match(/xml/).nil?
+        typ = "pdf"
+      else
+        typ = "xml"
+      end
+      out << {
+        'url' => x,
+        'content-type' => typ
+      }
+    end
     return {"doi" => doi, "member" => {"name" => memname, "url" => "374".murl},
-      "issn" => Array(issn).map(&:iurl), "links" => url}
+      "issn" => Array(issn).map(&:iurl), "links" => urls}
   when "221"
     # AAAS
     res = Serrano.works(ids: doi)
