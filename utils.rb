@@ -220,7 +220,7 @@ def fetch_url
       last_part
     ]
     return {"doi" => doi, "member" => {"name" => memname, "url" => "221".murl},
-      "issn" => Array(issn).map(&:iurl), "links" => url}
+      "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => url }
   when "98"
     # Hindawi
     res = Serrano.works(ids: doi)
