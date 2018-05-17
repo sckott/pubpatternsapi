@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8876:8876"
+    volumes:
+      - ../pubpatterns:/var/lib/pubpatterns
+    restart: always
