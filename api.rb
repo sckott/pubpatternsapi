@@ -28,9 +28,11 @@ class PubPatternsApp < Sinatra::Application
     halt 500, {'Content-Type' => 'application/json'}, MultiJson.dump({ 'error' => 'server error' })
   end
 
-  # make html files of content type text/html
   configure do
+    # make html files of content type text/html
     mime_type :apidocs, 'text/html'
+    set :server, :puma
+    set :protection, :except => [:json_csrf]
   end
 
   before '/api/*' do
