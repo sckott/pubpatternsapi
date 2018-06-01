@@ -102,5 +102,9 @@ $member_map = {
 	"297" => {
 		"name" => "springer",
 		"path" => "/var/lib/pubpatterns/src/springer.json"
+	},
+	"345" => {
+	    "name" => "microbiology",
+	    "path" => "/var/lib/pubpatterns/src/microbiology.json"
 	}
 }

@@ -47,13 +47,13 @@ end
 
 class String
   def murl
-    "http://api.crossref.org/members/" + self
+    "https://api.crossref.org/members/" + self
   end
 end
 
 class String
   def iurl
-    "http://api.crossref.org/journals/" + self
+    "https://api.crossref.org/journals/" + self
   end
 end
 
@@ -63,6 +63,8 @@ def get_ctype(x)
     ct = 'application/pdf'
   when 'xml'
     ct = 'application/xml'
+  when 'html'
+    ct = 'text/html'
   end
   return ct
 end
@@ -73,6 +75,8 @@ def from_ctype(x)
     ct = 'application/pdf'
   when 'xml'
     ct = 'application/xml'
+  when 'html'
+    ct = 'text/html'
   end
   return ct
 end
@@ -426,6 +430,33 @@ def fetch_url
 
     return { "doi" => doi, "member" => {"name" => memname, "url" => "297".murl},
       "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => url }, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "345"
+    # Microbiology Society
+    res = Serrano.works(ids: doi)
+    issn = res[0]['message']['ISSN']
+    bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn.join('|')) }.any? }[0]
+    
+    out = []
+    pdfref = doi.match(bit['components']['pdf']['regex']).to_s
+    if ['mic', 'jgv', 'jmm'].include? bit['journal']
+      patt = [res[0]['message']['volume'], res[0]['message']['issue'], res[0]['message']['page'].split('-')[0], pdfref]
+    else
+      patt = [pdfref,pdfref]
+    end
+    out << {
+      'url' => bit['urls']['pdf'] % patt,
+      'content-type' => get_ctype('pdf')
+    }
+
+    htmlref = doi.match(bit['components']['html']['regex']).to_s
+    out << {
+      'url' => bit['urls']['html'] % htmlref,
+      'content-type' => get_ctype('html')
+    }
+    return { "doi" => doi, "title" => res[0]['message']['container-title'][0].strip, 
+      "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "345".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => out, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   else
     return {"doi" => doi, "member" => nil, "issn" => nil, "links" => nil}
