@@ -433,6 +433,7 @@ def fetch_url
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   when "345"
     # Microbiology Society
+    pdf_url_latest = "http://ijs.microbiologyresearch.org/deliver/fulltext/ijsem/ijsem.%s.zip/ijsem%s.pdf"
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN']
     bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn.join('|')) }.any? }[0]
@@ -442,14 +443,18 @@ def fetch_url
     if ['ijs', 'mic', 'jgv', 'jmm'].include? bit['journal']
       if res[0]['message']['volume'].nil?
         patt = [pdfref,pdfref]
+        pdf_url = pdf_url_latest
       else
         patt = [res[0]['message']['volume'], res[0]['message']['issue'], res[0]['message']['page'].split('-')[0], pdfref]
+        pdf_url = bit['urls']['pdf']
       end
     else
       patt = [pdfref,pdfref]
+      pdf_url = pdf_url_latest
     end
+
     out << {
-      'url' => bit['urls']['pdf'] % patt,
+      'url' => pdf_url % patt,
       'content-type' => get_ctype('pdf')
     }
 
