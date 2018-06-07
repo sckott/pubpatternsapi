@@ -440,7 +440,11 @@ def fetch_url
     out = []
     pdfref = doi.match(bit['components']['pdf']['regex']).to_s
     if ['ijs', 'mic', 'jgv', 'jmm'].include? bit['journal']
-      patt = [res[0]['message']['volume'], res[0]['message']['issue'], res[0]['message']['page'].split('-')[0], pdfref]
+      if res[0]['message']['volume'].nil?
+        patt = [pdfref,pdfref]
+      else
+        patt = [res[0]['message']['volume'], res[0]['message']['issue'], res[0]['message']['page'].split('-')[0], pdfref]
+      end
     else
       patt = [pdfref,pdfref]
     end
