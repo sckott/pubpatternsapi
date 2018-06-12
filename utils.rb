@@ -1,6 +1,7 @@
 require "multi_json"
 require "serrano"
 require "faraday"
+require "oga"
 require_relative "member_mapper"
 require_relative "prefix_mapper"
 
@@ -433,28 +434,41 @@ def fetch_url
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   when "345"
     # Microbiology Society
-    pdf_url_latest = "http://ijs.microbiologyresearch.org/deliver/fulltext/ijsem/ijsem.%s.zip/ijsem%s.pdf"
+
+    # pdf_url_latest = "http://ijs.microbiologyresearch.org/deliver/fulltext/ijsem/ijsem.%s.zip/ijsem%s.pdf"
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN']
     bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn.join('|')) }.any? }[0]
     
-    out = []
-    pdfref = doi.match(bit['components']['pdf']['regex']).to_s
-    if ['ijs', 'mic', 'jgv', 'jmm'].include? bit['journal']
-      if res[0]['message']['volume'].nil?
-        patt = [pdfref,pdfref]
-        pdf_url = pdf_url_latest
-      else
-        patt = [res[0]['message']['volume'], res[0]['message']['issue'], res[0]['message']['page'].split('-')[0], pdfref]
-        pdf_url = bit['urls']['pdf']
-      end
-    else
-      patt = [pdfref,pdfref]
-      pdf_url = pdf_url_latest
+    # just scrape site
+    conn = Faraday.new(:url => "https://doi.org/" + doi) do |f|
+      f.use FaradayMiddleware::FollowRedirects
+      f.adapter  Faraday.default_adapter
     end
+    out = conn.get;
+    html = Oga.parse_html(out.body);
+    pdfnode = html.xpath('//a[contains(@class, "externallink pdf")]')[0]
+    ending = pdfnode.attr('href').text.sub(/\?.+/, '')
+    pdf_url = "http://%s.microbiologyresearch.org%s" % [bit['journal'], ending]
+    
+    out = []
+    # pdfref = doi.match(bit['components']['pdf']['regex']).to_s
+    # if ['ijs', 'mic', 'jgv', 'jmm'].include? bit['journal']
+    #   if res[0]['message']['volume'].nil?
+    #     patt = [pdfref,pdfref]
+    #     pdf_url = pdf_url_latest
+    #   else
+    #     patt = [res[0]['message']['volume'], res[0]['message']['issue'], res[0]['message']['page'].split('-')[0], pdfref]
+    #     pdf_url = bit['urls']['pdf']
+    #   end
+    # else
+    #   patt = [pdfref,pdfref]
+    #   pdf_url = pdf_url_latest
+    # end
 
     out << {
-      'url' => pdf_url % patt,
+      # 'url' => pdf_url % patt,
+      'url' => pdf_url,
       'content-type' => get_ctype('pdf')
     }
 

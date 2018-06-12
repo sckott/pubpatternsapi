@@ -9,6 +9,7 @@ group :manual do
   gem 'sinatra-contrib', '~> 2.0', '>= 2.0.1'
   gem 'puma', '~> 3.11', '>= 3.11.4'
   gem 'rake', '~> 12.3', '>= 12.3.1'
+  gem 'oga', '~> 2.15'
 end
 
 group :test do
