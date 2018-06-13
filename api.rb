@@ -11,7 +11,7 @@ require_relative 'utils'
 $config = YAML::load_file(File.join(__dir__, 'config.yaml'))
 
 $use_redis = true
-$redis = Redis.new host: ENV.fetch('REDIS_PORT_6379_TCP_ADDR', '172.19.0.2'),
+$redis = Redis.new host: ENV.fetch('REDIS_PORT_6379_TCP_ADDR', '172.18.0.2'),
                    port: ENV.fetch('REDIS_PORT_6379_TCP_PORT', 6379)
 
 

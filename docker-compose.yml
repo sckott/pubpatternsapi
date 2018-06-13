@@ -2,11 +2,11 @@ version: '2'
 
 services:
   redis:
-    image: redis
+    image: redis:4.0-alpine
     restart: always
     volumes:
         - $HOME/data/redis:/data
-    command:  redis-server --appendonly yes
+    command: redis-server --appendonly yes
   api:
     build: .
     ports:
