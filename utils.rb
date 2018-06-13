@@ -485,12 +485,17 @@ def fetch_url
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN']
 
-    # doi = "10.1001/jamaoncol.2017.4000"
+    # doi = "10.1001/jamaoncol.2017.4000" # good
+    # doi = "10.1001/jama.2014.4318" # bad
     conn = Faraday.new(:url => "https://doi.org/" + doi) do |f|
       f.use FaradayMiddleware::FollowRedirects
       f.adapter  Faraday.default_adapter
     end
-    out = conn.get;
+    begin
+      out = conn.get;
+    rescue Exception => e
+      halt 500, { error: "failed attempting to scrape the landing page" }.to_json
+    end
     html = Oga.parse_html(out.body);
     pdf_url = html.xpath('//meta[@name="citation_pdf_url"]')[0].attr('content').text
     html_url = pdf_url.sub('articlepdf', 'fullarticle')[/.*\//]
