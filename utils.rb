@@ -495,6 +495,7 @@ def fetch_url
     pdf_url = html.xpath('//meta[@name="citation_pdf_url"]')[0].attr('content').text
     html_url = pdf_url.sub('articlepdf', 'fullarticle')[/.*\//]
 
+    out = []
     out << {
       'url' => pdf_url,
       'content-type' => get_ctype('pdf')
