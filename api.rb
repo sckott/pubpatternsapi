@@ -3,6 +3,7 @@ require "sinatra"
 require "multi_json"
 require "yaml"
 require "redis"
+require "digest"
 require "sinatra/multi_route"
 
 require_relative 'utils'
