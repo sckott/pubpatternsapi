@@ -10,7 +10,6 @@ def err_member(e)
   return { error: "no mapper for the DOI" }.to_json
 end
 
-
 # members
 def fetch_pattern_member
   mem = $member_map[params["member"]]

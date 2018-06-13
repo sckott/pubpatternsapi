@@ -2,15 +2,16 @@ require "rubygems"
 require "sinatra"
 require "multi_json"
 require "yaml"
+require "redis"
 require "sinatra/multi_route"
-# require "redis"
 
 require_relative 'utils'
 
 $config = YAML::load_file(File.join(__dir__, 'config.yaml'))
 
-# $redis = Redis.new host: ENV.fetch('REDIS_PORT_6379_TCP_ADDR', 'localhost'),
-#                    port: ENV.fetch('REDIS_PORT_6379_TCP_PORT', 6379)
+$use_redis = true
+$redis = Redis.new host: ENV.fetch('REDIS_PORT_6379_TCP_ADDR', 'localhost'),
+                   port: ENV.fetch('REDIS_PORT_6379_TCP_PORT', 6379)
 
 
 class PubPatternsApp < Sinatra::Application
@@ -41,18 +42,20 @@ class PubPatternsApp < Sinatra::Application
     headers "Access-Control-Allow-Origin" => "*"
     cache_control :public, :must_revalidate, :max_age => 300
 
-    # if $config['caching']
-    #   @cache_key = Digest::MD5.hexdigest(request.url)
-    #   if $redis.exists(@cache_key)
-    #     headers 'Cache-Hit' => 'true'
-    #     halt 200, $redis.get(@cache_key)
-    #   end
-    # end
+    if $config['caching'] && $use_redis
+      if !request.path_info.match("/api/doi/").nil?
+        @cache_key = Digest::MD5.hexdigest(request.url)
+        if $redis.exists(@cache_key)
+          headers 'Cache-Hit' => 'true'
+          halt 200, $redis.get(@cache_key)
+        end
+      end
+    end
 
-    # puts '[env]'
-    # p env
-    # puts '[Params]'
-    # p params
+    puts '[env]'
+    p env
+    puts '[Params]'
+    p params
 
   end
 
@@ -62,6 +65,17 @@ class PubPatternsApp < Sinatra::Application
   #     $redis.set(@cache_key, response.body[0], ex: $config['caching']['expires'])
   #   end
   # end
+
+  after do
+    if $config['caching'] &&
+      $use_redis &&
+      !response.headers['Cache-Hit'] &&
+      response.status == 200 &&
+      request.path_info == "/api/doi/"
+
+      $redis.set(@cache_key, response.body[0], ex: $config['caching']['expires'])
+    end
+  end
 
   # prohibit HTTP methods
   route :put, :post, :delete, :copy, :options, :trace, '/*' do
