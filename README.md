@@ -27,7 +27,8 @@ available.  And if they aren't available chip in and make it work.
 ## Under the hood
 
 * API: Ruby/Sinatra
-* Caching: None right, now, but will do Redis if used
+* Caching: Redis - only on the `/api/doi/` route
+    * expires: 86400 seconds, or 24 hrs
 * Server: Caddy
   * https
 * Authentication: none
