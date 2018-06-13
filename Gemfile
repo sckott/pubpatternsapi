@@ -10,6 +10,7 @@ group :manual do
   gem 'puma', '~> 3.11', '>= 3.11.4'
   gem 'rake', '~> 12.3', '>= 12.3.1'
   gem 'oga', '~> 2.15'
+  gem 'redis', '~> 4.0', '>= 4.0.1'
 end
 
 group :test do

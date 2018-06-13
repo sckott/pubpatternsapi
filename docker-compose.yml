@@ -1,10 +1,18 @@
 version: '2'
 
 services:
+  redis:
+    image: redis:4.0-alpine
+    restart: always
+    volumes:
+        - $HOME/data/redis:/data
+    command: redis-server --appendonly yes
   api:
     build: .
     ports:
       - "8876:8876"
     volumes:
       - ../pubpatterns:/var/lib/pubpatterns
+    links:
+      - redis
     restart: always
