@@ -31,9 +31,11 @@ class PubPatternsApp < Sinatra::Application
   end
 
   configure do
-    # make html files of content type text/html
     mime_type :apidocs, 'text/html'
     set :server, :puma
+    set :raise_errors, false
+    set :dump_errors, false
+    set :show_exceptions, false
     set :protection, :except => [:json_csrf]
   end
 
@@ -42,8 +44,6 @@ class PubPatternsApp < Sinatra::Application
     headers "Access-Control-Allow-Methods" => "HEAD, GET"
     headers "Access-Control-Allow-Origin" => "*"
     cache_control :public, :must_revalidate, :max_age => 300
-
-    puts request.url
 
     if $config['caching'] && $use_redis
       if !request.path_info.match("/api/doi/").nil?
@@ -55,10 +55,10 @@ class PubPatternsApp < Sinatra::Application
       end
     end
 
-    puts '[env]'
-    p env
-    puts '[Params]'
-    p params
+    # puts '[env]'
+    # p env
+    # puts '[Params]'
+    # p params
   end
 
   after do
