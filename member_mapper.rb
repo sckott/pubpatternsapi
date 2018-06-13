@@ -106,5 +106,9 @@ $member_map = {
 	"345" => {
 	    "name" => "microbiology",
 	    "path" => "/var/lib/pubpatterns/src/microbiology.json"
+	},
+	"10" => {
+	    "name" => "jama",
+	    "path" => "/var/lib/pubpatterns/src/jama.json"
 	}
 }

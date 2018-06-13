@@ -481,6 +481,33 @@ def fetch_url
       "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "345".murl},
       "issn" => Array(issn).map(&:iurl), "links" => out, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "10" # JAMA
+    res = Serrano.works(ids: doi)
+    issn = res[0]['message']['ISSN']
+
+    # doi = "10.1001/jamaoncol.2017.4000"
+    conn = Faraday.new(:url => "https://doi.org/" + doi) do |f|
+      f.use FaradayMiddleware::FollowRedirects
+      f.adapter  Faraday.default_adapter
+    end
+    out = conn.get;
+    html = Oga.parse_html(out.body);
+    pdf_url = html.xpath('//meta[@name="citation_pdf_url"]')[0].attr('content').text
+    html_url = pdf_url.sub('articlepdf', 'fullarticle')[/.*\//]
+
+    out << {
+      'url' => pdf_url,
+      'content-type' => get_ctype('pdf')
+    }
+    out << {
+      'url' => html_url,
+      'content-type' => get_ctype('html')
+    }
+
+    return { "doi" => doi, "title" => res[0]['message']['container-title'][0].strip, 
+      "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "10".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => out, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
   else
     return {"doi" => doi, "member" => nil, "issn" => nil, "links" => nil}
   end
