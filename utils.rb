@@ -481,13 +481,13 @@ def fetch_url
       "issn" => Array(issn).map(&:iurl), "links" => out, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   when "10" # JAMA
-    res = Serrano.works(ids: doi)
+    res = Serrano.works(ids: doi);
     issn = res[0]['message']['ISSN']
 
     # doi = "10.1001/jamaoncol.2017.4000" # good
     # doi = "10.1001/jama.2014.4318" # bad
     conn = Faraday.new(:url => "https://doi.org/" + doi) do |f|
-      f.use FaradayMiddleware::FollowRedirects
+      f.use FaradayMiddleware::FollowRedirects, {limit: 6}
       f.adapter  Faraday.default_adapter
     end
     begin

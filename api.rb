@@ -26,9 +26,9 @@ class PubPatternsApp < Sinatra::Application
     halt 404, {'Content-Type' => 'application/json'}, MultiJson.dump({ 'error' => 'route not found' })
   end
 
-  error 500 do
-    halt 500, {'Content-Type' => 'application/json'}, MultiJson.dump({ 'error' => 'server error' })
-  end
+  # error 500 do
+  #   halt 500, {'Content-Type' => 'application/json'}, MultiJson.dump({ 'error' => 'server error' })
+  # end
 
   configure do
     mime_type :apidocs, 'text/html'
