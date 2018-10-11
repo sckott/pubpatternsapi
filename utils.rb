@@ -514,6 +514,19 @@ def fetch_url
       "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "235".murl},
       "issn" => Array(issn).map(&:iurl), "links" => out, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "233" # American Society of Clinical Oncology
+    res = Serrano.works(ids: doi)
+    issn = res[0]['message']['ISSN']
+    url = json['urls']['pdf'] % doi
+    out = []
+    out << {
+      'url' => url,
+      'content-type' => get_ctype('pdf')
+    }
+    return { "doi" => doi, "title" => res[0]['message']['container-title'][0].strip, 
+      "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "233".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => out, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
   else
     return {"doi" => doi, "member" => nil, "issn" => nil, "links" => nil}
   end

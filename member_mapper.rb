@@ -114,5 +114,9 @@ $member_map = {
 	"235" => {
 	    "name" => "american_society_for_microbiology",
 	    "path" => "/var/lib/pubpatterns/src/american_society_for_microbiology.json"
+	},
+	"233" => {
+	    "name" => "american_society_of_clinical_oncology",
+	    "path" => "/var/lib/pubpatterns/src/american_society_of_clinical_oncology.json"
 	}
 }
