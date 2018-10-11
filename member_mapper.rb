@@ -110,5 +110,9 @@ $member_map = {
 	"10" => {
 	    "name" => "jama",
 	    "path" => "/var/lib/pubpatterns/src/jama.json"
+	},
+	"235" => {
+	    "name" => "american_society_for_microbiology",
+	    "path" => "/var/lib/pubpatterns/src/american_society_for_microbiology.json"
 	}
 }
