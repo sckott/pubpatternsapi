@@ -433,8 +433,6 @@ def fetch_url
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   when "345"
     # Microbiology Society
-
-    # pdf_url_latest = "http://ijs.microbiologyresearch.org/deliver/fulltext/ijsem/ijsem.%s.zip/ijsem%s.pdf"
     res = Serrano.works(ids: doi)
     issn = res[0]['message']['ISSN']
     bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn.join('|')) }.any? }[0]
@@ -451,22 +449,7 @@ def fetch_url
     pdf_url = "http://%s.microbiologyresearch.org%s" % [bit['journal'], ending]
     
     out = []
-    # pdfref = doi.match(bit['components']['pdf']['regex']).to_s
-    # if ['ijs', 'mic', 'jgv', 'jmm'].include? bit['journal']
-    #   if res[0]['message']['volume'].nil?
-    #     patt = [pdfref,pdfref]
-    #     pdf_url = pdf_url_latest
-    #   else
-    #     patt = [res[0]['message']['volume'], res[0]['message']['issue'], res[0]['message']['page'].split('-')[0], pdfref]
-    #     pdf_url = bit['urls']['pdf']
-    #   end
-    # else
-    #   patt = [pdfref,pdfref]
-    #   pdf_url = pdf_url_latest
-    # end
-
     out << {
-      # 'url' => pdf_url % patt,
       'url' => pdf_url,
       'content-type' => get_ctype('pdf')
     }
@@ -511,6 +494,24 @@ def fetch_url
 
     return { "doi" => doi, "title" => res[0]['message']['container-title'][0].strip, 
       "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "10".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => out, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "235" # American Society for Microbiology
+    res = Serrano.works(ids: doi)
+    issn = res[0]['message']['ISSN']
+    url = json['urls']['pdf']
+    vol = res[0]['message']['volume']
+    iss = res[0]['message']['issue']
+    journal_bit = doi.match('[A-Za-z]+').to_s.downcase
+    other_bit = doi.split('/')[1].match('[0-9]+-[0-9]+').to_s
+    pdf_url = url % [journal_bit, vol, iss, other_bit] 
+    out = []
+    out << {
+      'url' => pdf_url,
+      'content-type' => get_ctype('pdf')
+    }
+    return { "doi" => doi, "title" => res[0]['message']['container-title'][0].strip, 
+      "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "235".murl},
       "issn" => Array(issn).map(&:iurl), "links" => out, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   else
