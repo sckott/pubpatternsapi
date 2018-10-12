@@ -121,7 +121,7 @@ $member_map = {
 	},
 	"317" => {
 	    "name" => "aip",
-	    "path" => "/var/lib/pubpatterns/src/american_institute_of_physics.json"
+	    "path" => "/var/lib/pubpatterns/src/aip.json"
 	},
 	"316" => {
 	    "name" => "acs",
