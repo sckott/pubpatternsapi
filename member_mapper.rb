@@ -118,5 +118,13 @@ $member_map = {
 	"233" => {
 	    "name" => "american_society_of_clinical_oncology",
 	    "path" => "/var/lib/pubpatterns/src/american_society_of_clinical_oncology.json"
+	},
+	"317" => {
+	    "name" => "aip",
+	    "path" => "/var/lib/pubpatterns/src/american_institute_of_physics.json"
+	},
+	"316" => {
+	    "name" => "acs",
+	    "path" => "/var/lib/pubpatterns/src/american_chemical_society.json"
 	}
 }
