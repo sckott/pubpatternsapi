@@ -557,6 +557,39 @@ def fetch_url
       "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "316".murl},
       "issn" => Array(issn).map(&:iurl), "links" => out, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "175" # The Royal Society
+    res = Serrano.works(ids: doi, verbose: true)
+    issn = res[0]['message']['ISSN'][0]
+    url = json['urls']['pdf'] % doi
+    out = []
+    out << {
+      'url' => url,
+      'content-type' => get_ctype('pdf')
+    }
+    return { "doi" => doi, "title" => res[0]['message']['container-title'][0].strip, 
+      "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "175".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => out, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  # when "56" # Cambridge
+  #   res = Serrano.works(ids: doi, verbose: true)
+  #   issn = res[0]['message']['ISSN'][0]
+  #   conn = Faraday.new(:url => "https://doi.org/" + doi) do |f|
+  #     f.use FaradayMiddleware::FollowRedirects
+  #     f.adapter  Faraday.default_adapter
+  #   end
+  #   out = conn.get;
+  #   html = Oga.parse_html(out.body);
+  #   pdf_url = "https://www.cambridge.org" + html.xpath('//a[@aria-label="Download PDF"]')[0].attr('href').text
+
+  #   out = []
+  #   out << {
+  #     'url' => pdf_url,
+  #     'content-type' => get_ctype('pdf')
+  #   }
+  #   return { "doi" => doi, "title" => res[0]['message']['container-title'][0].strip, 
+  #     "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "56".murl},
+  #     "issn" => Array(issn).map(&:iurl), "links" => out, 
+  #     "cookies" => json['cookies'], "open_access" => json['open_access']  }
   else
     return {"doi" => doi, "member" => nil, "issn" => nil, "links" => nil}
   end

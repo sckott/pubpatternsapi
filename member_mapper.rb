@@ -126,5 +126,9 @@ $member_map = {
 	"316" => {
 	    "name" => "acs",
 	    "path" => "/var/lib/pubpatterns/src/american_chemical_society.json"
+	},
+	"175" => {
+	    "name" => "the-royal-society",
+	    "path" => "/var/lib/pubpatterns/src/the_royal_society.json"
 	}
 }

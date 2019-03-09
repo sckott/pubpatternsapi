@@ -16,3 +16,5 @@ services:
     links:
       - redis
     restart: always
+    environment:
+      - CROSSREF_EMAIL=myrmecocystus@gmail.com
