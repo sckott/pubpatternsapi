@@ -130,5 +130,9 @@ $member_map = {
 	"175" => {
 	    "name" => "the-royal-society",
 	    "path" => "/var/lib/pubpatterns/src/the_royal_society.json"
+	},
+	"237" => {
+	    "name" => "company-of-biologists",
+	    "path" => "/var/lib/pubpatterns/src/company_of_biologists.json"
 	}
 }

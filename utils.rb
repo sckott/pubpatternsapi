@@ -570,6 +570,23 @@ def fetch_url
       "member" => {"name" => memname, "publisher" => res[0]['message']['publisher'], "url" => "175".murl},
       "issn" => Array(issn).map(&:iurl), "links" => out, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "237" # Company of Biologists
+    res = Serrano.works(ids: doi);
+    issn = res[0]['message']['ISSN']
+    bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn.first) }.any? }[0]
+
+    pp = res[0]['message']['page']
+    if pp.match(/-/)
+      page_part = pp.split('-')[0].match("[0-9]+$").to_s
+    else
+      page_part = res[0]['message']['page'].match("[0-9]+$").to_s
+    end
+
+    url = bit["urls"]["pdf"] % [ res[0]['message']['volume'], res[0]['message']['issue'], 
+      page_part ]
+    return { "doi" => doi, "member" => {"name" => memname, "url" => "237".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => url }, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
   # when "56" # Cambridge
   #   res = Serrano.works(ids: doi, verbose: true)
   #   issn = res[0]['message']['ISSN'][0]
