@@ -587,6 +587,18 @@ def fetch_url
     return { "doi" => doi, "member" => {"name" => memname, "url" => "237".murl},
       "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => url }, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "246" # Biorxiv
+    res = Serrano.works(ids: doi);
+    conn = Faraday.new(:url => "https://doi.org/" + doi) do |f|
+      f.use FaradayMiddleware::FollowRedirects
+      f.adapter  Faraday.default_adapter
+    end
+    out = conn.get;
+    html = Oga.parse_html(out.body);
+    pdf_url = html.xpath('//meta[@name="citation_pdf_url"]')[0].attr('content').text
+    return { "doi" => doi, "member" => {"name" => memname, "url" => "246".murl},
+      "issn" => nil, "links" => { "pdf" => pdf_url }, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
   # when "56" # Cambridge
   #   res = Serrano.works(ids: doi, verbose: true)
   #   issn = res[0]['message']['ISSN'][0]

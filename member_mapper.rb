@@ -134,5 +134,9 @@ $member_map = {
 	"237" => {
 	    "name" => "company-of-biologists",
 	    "path" => "/var/lib/pubpatterns/src/company_of_biologists.json"
+	},
+	"246" => {
+	    "name" => "biorxiv",
+	    "path" => "/var/lib/pubpatterns/src/biorxiv.json"
 	}
 }
