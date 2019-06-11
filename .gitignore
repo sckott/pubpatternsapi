@@ -5,3 +5,5 @@ Caddyfile
 sqlnotes.md
 config_sac_local.yaml
 servernotes.md
+usage/*
+
