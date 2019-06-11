@@ -138,5 +138,9 @@ $member_map = {
 	"246" => {
 	    "name" => "biorxiv",
 	    "path" => "/var/lib/pubpatterns/src/biorxiv.json"
+	},
+	"286" => {
+	    "name" => "oxford university press",
+	    "path" => "/var/lib/pubpatterns/src/oxford.json"
 	}
 }

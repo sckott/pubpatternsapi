@@ -599,6 +599,21 @@ def fetch_url
     return { "doi" => doi, "member" => {"name" => memname, "url" => "246".murl},
       "issn" => nil, "links" => { "pdf" => pdf_url }, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "286" # Oxford
+    res = Serrano.works(ids: doi);
+    issn = res[0]['message']['ISSN']
+    url = res[0]['message']['link'][0]['URL']
+    if url.match(/article-pdf/).nil?
+      url = nil
+    end
+    pdf_url = []
+    pdf_url << {
+      'url' => url,
+      'content-type' => get_ctype('pdf')
+    }
+    return { "doi" => doi, "member" => {"name" => memname, "url" => "286".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => pdf_url }, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
   # when "56" # Cambridge
   #   res = Serrano.works(ids: doi, verbose: true)
   #   issn = res[0]['message']['ISSN'][0]
