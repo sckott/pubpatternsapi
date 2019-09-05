@@ -142,5 +142,9 @@ $member_map = {
 	"286" => {
 	    "name" => "oxford university press",
 	    "path" => "/var/lib/pubpatterns/src/oxford.json"
+	},
+	"1822" => {
+	    "name" => "centers for disease control and prevention",
+	    "path" => "/var/lib/pubpatterns/src/cdc.json"
 	}
 }

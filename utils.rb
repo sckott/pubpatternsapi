@@ -614,6 +614,20 @@ def fetch_url
     return { "doi" => doi, "member" => {"name" => memname, "url" => "286".murl},
       "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => pdf_url }, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
+  when "1822" # CDC
+    res = Serrano.works(ids: doi);
+    issn = res[0]['message']['ISSN']
+    year = res[0]['message']['created']['date-parts'][0][0]
+    pdf_url = []
+    doi_part = doi.split('/').last.split('.').last
+    url = json['urls']['pdf'] % [year.to_s, [doi_part[0..1], doi_part[2..]].join('_')]
+    pdf_url << {
+      'url' => url,
+      'content-type' => get_ctype('pdf')
+    }
+    return { "doi" => doi, "member" => {"name" => memname, "url" => "1822".murl},
+      "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => pdf_url }, 
+      "cookies" => json['cookies'], "open_access" => json['open_access']  }
   # when "56" # Cambridge
   #   res = Serrano.works(ids: doi, verbose: true)
   #   issn = res[0]['message']['ISSN'][0]
