@@ -24,7 +24,7 @@ GEM
     oga (2.15)
       ast
       ruby-ll (~> 2.1)
-    puma (3.11.4)
+    puma (3.12.2)
     rack (2.0.7)
     rack-protection (2.0.3)
       rack
@@ -78,7 +78,7 @@ PLATFORMS
 DEPENDENCIES
   multi_json (~> 1.13, >= 1.13.1)
   oga (~> 2.15)
-  puma (~> 3.11, >= 3.11.4)
+  puma (~> 3.12)
   rack-test (~> 1.0)
   rake (~> 12.3, >= 12.3.1)
   redis (~> 4.0, >= 4.0.1)
