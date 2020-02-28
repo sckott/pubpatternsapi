@@ -1,5 +1,5 @@
 source "http://rubygems.org/"
-ruby "2.6.0"
+ruby "2.7.0"
 
 gem 'multi_json', '~> 1.13', '>= 1.13.1'
 gem 'serrano', '~> 0.5.0'
