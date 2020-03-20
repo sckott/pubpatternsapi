@@ -576,14 +576,13 @@ def fetch_url
     bit = json['journals'].select { |x| Array(x['issn']).select{ |z| !!z.match(issn.first) }.any? }[0]
 
     pp = res[0]['message']['page']
-    if pp.match(/-/)
-      page_part = pp.split('-')[0].match("[0-9]+$").to_s
-    else
-      page_part = res[0]['message']['page'].match("[0-9]+$").to_s
-    end
+    # if pp.match(/-/)
+    #   page_part = pp.split('-')[0].match("[0-9]+$").to_s
+    # else
+    #   page_part = res[0]['message']['page'].match("[0-9]+$").to_s
+    # end
 
-    url = bit["urls"]["pdf"] % [ res[0]['message']['volume'], res[0]['message']['issue'], 
-      page_part ]
+    url = bit["urls"]["pdf"] % [ res[0]['message']['volume'], res[0]['message']['issue'], pp ]
     out = []
     out << {
       'url' => url,
