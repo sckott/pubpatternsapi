@@ -584,8 +584,13 @@ def fetch_url
 
     url = bit["urls"]["pdf"] % [ res[0]['message']['volume'], res[0]['message']['issue'], 
       page_part ]
+    out = []
+    out << {
+      'url' => url,
+      'content-type' => get_ctype('pdf')
+    }
     return { "doi" => doi, "member" => {"name" => memname, "url" => "237".murl},
-      "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => url }, 
+      "issn" => Array(issn).map(&:iurl), "links" => out, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   when "246" # Biorxiv
     res = Serrano.works(ids: doi);
