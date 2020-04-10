@@ -599,9 +599,14 @@ def fetch_url
     end
     out = conn.get;
     html = Oga.parse_html(out.body);
-    pdf_url = html.xpath('//meta[@name="citation_pdf_url"]')[0].attr('content').text
+    pdfurl = html.xpath('//meta[@name="citation_pdf_url"]')[0].attr('content').text
+    pdf_url = []
+    pdf_url << {
+      'url' => pdfurl,
+      'content-type' => get_ctype('pdf')
+    }
     return { "doi" => doi, "member" => {"name" => memname, "url" => "246".murl},
-      "issn" => nil, "links" => { "pdf" => pdf_url }, 
+      "issn" => nil, "links" => pdf_url, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   when "286" # Oxford
     res = Serrano.works(ids: doi);
@@ -616,7 +621,7 @@ def fetch_url
       'content-type' => get_ctype('pdf')
     }
     return { "doi" => doi, "member" => {"name" => memname, "url" => "286".murl},
-      "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => pdf_url }, 
+      "issn" => Array(issn).map(&:iurl), "links" => pdf_url, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   when "1822" # CDC
     res = Serrano.works(ids: doi);
@@ -630,7 +635,7 @@ def fetch_url
       'content-type' => get_ctype('pdf')
     }
     return { "doi" => doi, "member" => {"name" => memname, "url" => "1822".murl},
-      "issn" => Array(issn).map(&:iurl), "links" => { "pdf" => pdf_url }, 
+      "issn" => Array(issn).map(&:iurl), "links" => pdf_url, 
       "cookies" => json['cookies'], "open_access" => json['open_access']  }
   # when "56" # Cambridge
   #   res = Serrano.works(ids: doi, verbose: true)
