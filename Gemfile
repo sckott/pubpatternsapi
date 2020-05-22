@@ -7,7 +7,7 @@ gem 'serrano', '~> 0.6.0'
 group :manual do
   gem 'sinatra', '~> 2.0', '>= 2.0.8.1'
   gem 'sinatra-contrib', '~> 2.0', '>= 2.0.8.1'
-  gem 'puma', '~> 4.3', '>= 4.3.3'
+  gem 'puma', '~> 4.3'
   gem 'rake', '~> 12.3'
   gem 'oga', '~> 3.2'
   gem 'redis', '~> 4.1', '>= 4.1.3'
