@@ -1,7 +1,9 @@
 Pubpatterns API
 ===============
 
-this is what you want: <https://ftdoi.org>
+API is down. No longer maintained.
+
+<!-- this is what you want: <https://ftdoi.org>
 
 see also: <https://github.com/sckott/pubpatterns>
 
@@ -172,3 +174,4 @@ curl 'https://ftdoi.org/api/fetch/10.1371/journal.pgen.1006546?type=xml'
 # or
 curl -H 'application/xml' 'https://ftdoi.org/api/fetch/10.1371/journal.pgen.1006546/'
 ```
+ -->
